@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 function App() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const [search, setSearch] = useState("");
   const [newName, setNewName] = useState("");
@@ -21,7 +27,7 @@ function App() {
         const data = await respuesta.json();
         setUsers(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       } finally {
         setCargando(false);
       }
@@ -44,7 +50,7 @@ function App() {
     setNewEmail("");
   };
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = (id: number) => {
     setUsers((prev) => prev.filter((u) => u.id !== id));
   };
 
@@ -75,7 +81,7 @@ function App() {
       <div style={styles.card}>
         <h1 style={styles.title}>Gestión de Usuarios</h1>
 
-        {/* Barra de búsqueda */}
+       
         <div style={styles.section}>
           <label style={styles.label}>Buscar usuarios</label>
           <input
@@ -87,7 +93,7 @@ function App() {
           />
         </div>
 
-        {/* Formulario para agregar */}
+       
         <div style={styles.section}>
           <h2 style={styles.subtitle}>Agregar usuario</h2>
           <div style={styles.formRow}>
@@ -117,7 +123,7 @@ function App() {
           </button>
         </div>
 
-        {/* Lista de usuarios */}
+        
         <div style={styles.section}>
           <h2 style={styles.subtitle}>
             Usuarios ({filteredUsers.length})
@@ -204,7 +210,7 @@ const styles = {
   formRow: {
     display: "flex",
     gap: "12px",
-    flexWrap: "wrap",
+    flexWrap: "wrap" as const,
     marginBottom: "12px",
   },
   formGroup: {
@@ -227,7 +233,7 @@ const styles = {
     padding: 0,
     margin: 0,
     maxHeight: "320px",
-    overflowY: "auto",
+    overflowY: "auto" as const,
   },
   listItem: {
     display: "flex",
